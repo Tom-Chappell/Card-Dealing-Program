@@ -8,26 +8,99 @@ namespace CMP1903M_A01_2223
 {
     class Pack
     {
-        List<Card> pack;
+        List<Card> pack = new List<Card>();
 
-        public Pack()
+        public Pack() //Initialises the card pack
         {
-            //Initialise the card pack here
+            for (int j = 1; j < 5; j++)
+            {
+                for (int i = 1; i < 14; i++)
+                {
+                    pack.Add(new Card(i, j));
+                }
+            }
         }
 
-        public static bool shuffleCardPack(int typeOfShuffle)
+        public bool shuffleCardPack(int typeOfShuffle, int shuffleIterations) // shuffles pack based on shuffle type
         {
-            //Shuffles the pack based on the type of shuffle
+            List<Card> shuffledPack = new List<Card>(pack);
 
-        }
-        public static Card deal()
-        {
-            //Deals one card
+            for (int shuffle = 0; shuffle < shuffleIterations; shuffle++)
+            {
+                switch (typeOfShuffle)
+                {
+                    case 1: // Fisher-Yates
+                        for (int i = shuffledPack.Count - 1; i > 0; i--)
+                        {
+                            Random r = new Random();
+                            int j = r.Next(0, i);
+                            Card tempCard = shuffledPack[i];
+                            shuffledPack[i] = shuffledPack[j];
+                            shuffledPack[j] = tempCard;
+                        }
+                        break;
 
+                    case 2: // Riffle
+                        List<Card> tempPack = new List<Card>(shuffledPack);
+                        int newIndex = 0;
+                        for (int i = 0; i < tempPack.Count / 2; i++)
+                        {
+                            shuffledPack[newIndex] = tempPack[i + tempPack.Count / 2];
+                            newIndex++;
+                            shuffledPack[newIndex] = tempPack[i];
+                            newIndex++;
+                        }
+                        break;
+
+                    case 3: // No shuffle
+                        break;
+
+                    default:
+                        // INVALID SHUFFLE SELECTED
+                        return false;
+                }
+            }
+            pack = shuffledPack;
+            return true;
         }
-        public static List<Card> dealCard(int amount)
+
+        public Card deal() // deals one card
         {
-            //Deals the number of cards specified by 'amount'
+            if (pack.Count != 0)
+            {
+                Card dealtCard;
+
+                dealtCard = pack[0];
+                pack.RemoveAt(0);
+
+                return dealtCard;
+            }
+            else
+            {
+                // NOT ENOUGH CARDS LEFT
+                return new Card(0 ,0);
+            }
+        }
+
+        public List<Card> dealCard(int amount) // deals the number of cards specified by 'amount'
+        {
+            if (amount <= pack.Count)
+            {
+                List<Card> dealtCards = new List<Card>();
+
+                for (int i = 0; i < amount; i++)
+                {
+                    dealtCards.Add(pack[0]);
+                    pack.RemoveAt(0);
+                }
+
+                return dealtCards;
+            }
+            else
+            {
+                // NOT ENOUGH CARDS LEFT
+                return new List<Card>();
+            }
         }
     }
 }
