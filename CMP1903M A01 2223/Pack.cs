@@ -10,7 +10,7 @@ namespace CMP1903M_A01_2223
     {
         List<Card> pack = new List<Card>();
 
-        public Pack() //Initialises the card pack
+        public Pack() // initialises the card pack
         {
             for (int j = 1; j < 5; j++)
             {
@@ -21,45 +21,43 @@ namespace CMP1903M_A01_2223
             }
         }
 
-        public bool shuffleCardPack(int typeOfShuffle, int shuffleIterations) // shuffles pack based on shuffle type
+        public bool shuffleCardPack(int typeOfShuffle) // shuffles pack based on shuffle type
         {
             List<Card> shuffledPack = new List<Card>(pack);
 
-            for (int shuffle = 0; shuffle < shuffleIterations; shuffle++)
+            switch (typeOfShuffle)
             {
-                switch (typeOfShuffle)
-                {
-                    case 1: // Fisher-Yates
-                        for (int i = shuffledPack.Count - 1; i > 0; i--)
-                        {
-                            Random r = new Random();
-                            int j = r.Next(0, i);
-                            Card tempCard = shuffledPack[i];
-                            shuffledPack[i] = shuffledPack[j];
-                            shuffledPack[j] = tempCard;
-                        }
-                        break;
+                case 1: // Fisher-Yates shuffle
+                    for (int i = shuffledPack.Count - 1; i > 0; i--)
+                    {
+                        Random r = new Random();
+                        int j = r.Next(0, i);
+                        Card tempCard = shuffledPack[i];
+                        shuffledPack[i] = shuffledPack[j];
+                        shuffledPack[j] = tempCard;
+                    }
+                    break;
 
-                    case 2: // Riffle
-                        List<Card> tempPack = new List<Card>(shuffledPack);
-                        int newIndex = 0;
-                        for (int i = 0; i < tempPack.Count / 2; i++)
-                        {
-                            shuffledPack[newIndex] = tempPack[i + tempPack.Count / 2];
-                            newIndex++;
-                            shuffledPack[newIndex] = tempPack[i];
-                            newIndex++;
-                        }
-                        break;
+                case 2: // Riffle shuffle
+                    List<Card> tempPack = new List<Card>(shuffledPack);
+                    int newIndex = 0;
 
-                    case 3: // No shuffle
-                        break;
+                    for (int i = 0; i < tempPack.Count / 2; i++)
+                    {
+                        shuffledPack[newIndex] = tempPack[i + tempPack.Count / 2];
+                        newIndex++;
+                        shuffledPack[newIndex] = tempPack[i];
+                        newIndex++;
+                    }
+                    break;
 
-                    default:
-                        // INVALID SHUFFLE SELECTED
-                        return false;
-                }
+                case 3: // no shuffle
+                    break;
+
+                default: // invalid shuffle ID
+                    return false;
             }
+
             pack = shuffledPack;
             return true;
         }
@@ -75,14 +73,13 @@ namespace CMP1903M_A01_2223
 
                 return dealtCard;
             }
-            else
+            else // pack was empty
             {
-                // NOT ENOUGH CARDS LEFT
-                return new Card(0 ,0);
+                return new Card(-1 ,-1);
             }
         }
 
-        public List<Card> dealCard(int amount) // deals the number of cards specified by 'amount'
+        public List<Card> dealCard(int amount) // deals the specified number of cards
         {
             if (amount <= pack.Count)
             {
@@ -96,9 +93,8 @@ namespace CMP1903M_A01_2223
 
                 return dealtCards;
             }
-            else
+            else // pack didn't contain the specified number of cards
             {
-                // NOT ENOUGH CARDS LEFT
                 return new List<Card>();
             }
         }

@@ -13,21 +13,22 @@ namespace CMP1903M_A01_2223
         public Testing()
         {
             pack = new Pack();
+        }
 
-            pack.shuffleCardPack(1, 1);
-            pack.shuffleCardPack(2, 5);
-            pack.shuffleCardPack(3, 1);
+        public void test() // tests the pack class's methods
+        {
+            Console.WriteLine("Fisher-Yates: " + pack.shuffleCardPack(1));
+            Console.WriteLine("Riffle: " + pack.shuffleCardPack(2));
+            Console.WriteLine("No shuffle: " + pack.shuffleCardPack(3));
 
             Card cardSingle = pack.deal();
-
             List<Card> cardCollection = pack.dealCard(4);
 
-            Console.WriteLine("Single card dealt: " + Convert.ToString(cardSingle.Value) + ", " + Convert.ToString(cardSingle.Suit));
-
-            Console.WriteLine("Collection of cards dealt:");
+            Console.WriteLine("\nSingle card dealt: " + Convert.ToString(cardSingle.value) + ", " + Convert.ToString(cardSingle.suit));
+            Console.WriteLine("\nCollection of cards dealt:");
             foreach (Card card in cardCollection)
             {
-                Console.WriteLine(Convert.ToString(card.Value) + ", " + Convert.ToString(card.Suit));
+                Console.WriteLine(Convert.ToString(card.value) + ", " + Convert.ToString(card.suit));
             }
         }
     }
@@ -36,7 +37,9 @@ namespace CMP1903M_A01_2223
     {
         static void Main(string[] args)
         {
-            Testing test = new Testing();
+            Testing testClass = new Testing();
+            testClass.test();
+
             Console.ReadLine();
         }
     }
