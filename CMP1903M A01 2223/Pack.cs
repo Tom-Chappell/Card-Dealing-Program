@@ -24,13 +24,13 @@ namespace CMP1903M_A01_2223
         public bool shuffleCardPack(int typeOfShuffle) // shuffles pack based on shuffle type
         {
             List<Card> shuffledPack = new List<Card>(pack);
+            Random r = new Random();
 
             switch (typeOfShuffle)
             {
                 case 1: // Fisher-Yates shuffle
                     for (int i = shuffledPack.Count - 1; i > 0; i--)
                     {
-                        Random r = new Random();
                         int j = r.Next(0, i);
                         Card tempCard = shuffledPack[i];
                         shuffledPack[i] = shuffledPack[j];
@@ -41,13 +41,25 @@ namespace CMP1903M_A01_2223
                 case 2: // Riffle shuffle
                     List<Card> tempPack = new List<Card>(shuffledPack);
                     int newIndex = 0;
-
-                    for (int i = 0; i < tempPack.Count / 2; i++)
+                    if (r.Next(0, 2) == 0) // decides which deck half goes first
                     {
-                        shuffledPack[newIndex] = tempPack[i + tempPack.Count / 2];
-                        newIndex++;
-                        shuffledPack[newIndex] = tempPack[i];
-                        newIndex++;
+                        for (int i = 0; i < tempPack.Count / 2; i++)
+                        {
+                            shuffledPack[newIndex] = tempPack[i + tempPack.Count / 2];
+                            newIndex++;
+                            shuffledPack[newIndex] = tempPack[i];
+                            newIndex++;
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < tempPack.Count / 2; i++)
+                        {
+                            shuffledPack[newIndex] = tempPack[i];
+                            newIndex++;
+                            shuffledPack[newIndex] = tempPack[i + tempPack.Count / 2];
+                            newIndex++;
+                        }
                     }
                     break;
 
@@ -55,6 +67,7 @@ namespace CMP1903M_A01_2223
                     break;
 
                 default: // invalid shuffle ID
+                    Console.WriteLine("ERROR: Invalid shuffle ID");
                     return false;
             }
 
@@ -62,39 +75,47 @@ namespace CMP1903M_A01_2223
             return true;
         }
 
-        public Card deal() // deals one card
+        public Card deal(bool fromTop = true) // deals one card
         {
             if (pack.Count != 0)
             {
                 Card dealtCard;
 
-                dealtCard = pack[0];
-                pack.RemoveAt(0);
+                int location = 0;
+                if (fromTop) location = pack.Count - 1;
+
+                dealtCard = pack[location];
+                pack.RemoveAt(location);
 
                 return dealtCard;
             }
             else // pack was empty
             {
+                Console.WriteLine("ERROR: Pack was empty");
                 return new Card(-1 ,-1);
             }
         }
 
-        public List<Card> dealCard(int amount) // deals the specified number of cards
+        public List<Card> dealCard(int amount, bool fromTop = true) // deals the specified number of cards
         {
             if (amount <= pack.Count)
             {
                 List<Card> dealtCards = new List<Card>();
+                int location = 0;
 
                 for (int i = 0; i < amount; i++)
                 {
-                    dealtCards.Add(pack[0]);
-                    pack.RemoveAt(0);
+                    if (fromTop) location = pack.Count - 1;
+                    dealtCards.Add(pack[location]);
+                    pack.RemoveAt(location);
                 }
 
                 return dealtCards;
             }
             else // pack didn't contain the specified number of cards
             {
+                if (pack.Count == 0) Console.WriteLine("ERROR: Pack was empty");
+                else Console.WriteLine("ERROR: There are not " + Convert.ToString(amount) + " card(s) remaining in the deck");
                 return new List<Card>();
             }
         }
