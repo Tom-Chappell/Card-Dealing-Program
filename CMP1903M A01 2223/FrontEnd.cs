@@ -43,10 +43,9 @@ namespace CMP1903M_A01_2223
                         {
                             Console.WriteLine("Amount of cards to deal:");
                             int cardAmount = Convert.ToInt32(Console.ReadLine());
-                            if (cardAmount <= 0) break;
 
                             List<Card> cardCollection = pack.dealCard(cardAmount);
-                            Console.WriteLine("\nCollection of cards dealt:");
+                            if (cardCollection.Count != 0) Console.WriteLine("\nCollection of cards dealt:");
                             foreach (Card card in cardCollection)
                             {
                                 Console.WriteLine(Convert.ToString(card.value) + ", " + Convert.ToString(card.suit));
@@ -55,13 +54,16 @@ namespace CMP1903M_A01_2223
                         catch { }
                         break;
                     case "f":
-                        Console.WriteLine("Fisher-Yates: " + pack.shuffleCardPack(1));
+                        pack.shuffleCardPack(1);
+                        Console.WriteLine("Fisher-Yates shuffle performed");
                         break;
                     case "r":
-                        Console.WriteLine("Riffle: " + pack.shuffleCardPack(2));
+                        pack.shuffleCardPack(2);
+                        Console.WriteLine("Riffle shuffle performed");
                         break;
                     case "n":
-                        Console.WriteLine("No shuffle: " + pack.shuffleCardPack(3));
+                        pack.shuffleCardPack(3);
+                        Console.WriteLine("No shuffle performed");
                         break;
                     case "t": // tests each pack function
                         Test testClass = new Test();

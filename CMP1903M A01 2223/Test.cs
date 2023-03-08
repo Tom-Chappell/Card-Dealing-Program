@@ -25,7 +25,7 @@ namespace CMP1903M_A01_2223
             List<Card> cardCollection = pack.dealCard(4);
 
             Console.WriteLine("\nSingle card dealt: " + Convert.ToString(cardSingle.value) + ", " + Convert.ToString(cardSingle.suit));
-            Console.WriteLine("\nCollection of cards dealt:");
+            if (cardCollection.Count != 0) Console.WriteLine("\nCollection of cards dealt:");
             foreach (Card card in cardCollection)
             {
                 Console.WriteLine(Convert.ToString(card.value) + ", " + Convert.ToString(card.suit));
