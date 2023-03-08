@@ -98,7 +98,7 @@ namespace CMP1903M_A01_2223
 
         public List<Card> dealCard(int amount, bool fromTop = true) // deals the specified number of cards
         {
-            if (amount <= pack.Count)
+            if (amount <= pack.Count && amount > 0)
             {
                 List<Card> dealtCards = new List<Card>();
                 int location = 0;
@@ -115,6 +115,7 @@ namespace CMP1903M_A01_2223
             else // pack didn't contain the specified number of cards
             {
                 if (pack.Count == 0) Console.WriteLine("ERROR: Pack was empty");
+                else if (amount <= 0) Console.WriteLine("ERROR: Requested cards was below 1");
                 else Console.WriteLine("ERROR: There are not " + Convert.ToString(amount) + " card(s) remaining in the deck");
                 return new List<Card>();
             }
